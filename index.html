@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Document</title>
+</head>
+<body>
+  <form>
+   <p>
+   <label for ="name">Name</label>
+   <input type = "text" name = "name" id="name">
+   </p>
+   <button id="search">Find pokemon</button>
+  </form>
+ <div id = "pokemon"></div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  document.getElementById('search').addEventListener('click', event => {
+   event.preventDefault()
+   const pokemonname = document.getElementById('name').value
+
+ axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonname}`)
+ .then (res =>{
+   const pokemon = res.data
+   console.log(pokemon)
+
+    if(pokemon.name){
+   document.getElementById('pokemon').innerHTML = `
+     <h1>pokemon Name = ${pokemon.name}</h1>
+     <h2>pokemon moves = ${pokemon.moves[0].move.name}</h2>
+     <h3>pokemon # = ${pokemon.order}</h3>
+     <h4>pokemon weight = ${pokemon.weight}</h4>
+     <img src= "${pokemon.sprites.back_default}"alt="${pokemon.name} sprites">
+ `  }
+ else {
+  document.getElementById('pokemon').innerHTML=`<h3>Pokemon not found</h3>`
+ }
+ })
+
+.catch(err=> console.log(err))
+  })
+
+</script>
+</body>
+</html>
